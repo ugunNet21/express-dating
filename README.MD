@@ -28,7 +28,13 @@ npm install --save-dev nodemon
 
 npx madge --circular ./app.js
 
+npm install express-validator
+
 ````
+
+- Run jwt env:
+- node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+
 
 ### DB
 
