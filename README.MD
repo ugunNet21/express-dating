@@ -124,6 +124,40 @@ VALUES ('example@example.com', '1234567890', 'hashed_password', 'John', 'Doe', '
 
 ````
 
+- insert untk match user
+````
+INSERT INTO users (email, password_hash, first_name, last_name, birth_date, gender) 
+VALUES ('user3@example.com', 'dummyhash', 'User', 'Three', '1995-01-01', 'male')
+RETURNING user_id;
+
+````
+
+````
+INSERT INTO matches (user_id_1, user_id_2, created_at, is_active) 
+VALUES (1, 3, NOW(), true);
+
+````
+
+````
+SELECT * FROM matches;
+
+````
+
+- buat match untuk user 2
+````
+INSERT INTO matches (user_id_1, user_id_2, is_active, created_at)
+VALUES (2, 3, true, NOW());
+
+SELECT * FROM matches WHERE user_id_1 = 2 OR user_id_2 = 2;
+
+````
+- kirim message
+````
+INSERT INTO messages (match_id, sender_id, content, sent_at, is_read)
+VALUES (4, 2, 'Halo, ini pesan pertama!', NOW(), false);
+
+````
+
 ## Tes Endpoint
 
 ### POST Regitrasi /users
@@ -160,5 +194,23 @@ curl -X POST http://localhost:3000/api/auth/login \
 curl -X GET http://localhost:3000/api/users/me \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
+
+````
+
+### Match
+
+````
+curl -X GET http://localhost:3000/api/matches \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
+
+````
+
+### Match Detail
+
+````
+curl -X GET http://localhost:3000/api/matches/2/messages \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_VALID_TOKEN"
 
 ````

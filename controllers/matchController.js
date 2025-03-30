@@ -41,11 +41,14 @@ exports.getMatchMessages = async (req, res) => {
        WHERE match_id = $1 AND (user_id_1 = $2 OR user_id_2 = $2)`,
       [matchId, userId]
     );
+    console.log('Checking if user is part of match', { matchId, userId });
 
     if (matchCheck.rows.length === 0) {
+      console.log(`User ${userId} is NOT part of match ${matchId}`);
       return res.status(403).json({ message: 'Not authorized to view these messages' });
     }
-
+    console.log(`User ${userId} is authorized to view match ${matchId}`);
+    
     const { rows } = await db.query(
       `SELECT * FROM messages 
        WHERE match_id = $1 
