@@ -6,8 +6,8 @@ module.exports = {
     check('password')
       .isLength({ min: 6 })
       .withMessage('Password must be at least 6 characters'),
-    check('firstName').notEmpty().withMessage('First name is required'),
-    check('birthDate').isDate().withMessage('Invalid birth date'),
+    check('first_name').notEmpty().withMessage('First name is required'),
+    check('birth_date').isDate().withMessage('Invalid birth date'),
     check('gender').isIn(['male', 'female', 'other']).withMessage('Invalid gender'),
     (req, res, next) => {
       const errors = validationResult(req);
