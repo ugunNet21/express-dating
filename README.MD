@@ -159,6 +159,10 @@ VALUES (4, 2, 'Halo, ini pesan pertama!', NOW(), false);
 ````
 
 ## Tes Endpoint
+## Contoh code Bearer Token
+````
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImVtYWlsIjoibmV3dXNlckBleGFtcGxlLmNvbSIsImlhdCI6MTc0MzMyNTI3MywiZXhwIjoxNzQzOTMwMDczfQ.25MaOOWVN6SGz-HLQ84lK0ivsEaP-tCy7Yp_Ejd2rME
+````
 
 ### POST Regitrasi /users
 
@@ -212,5 +216,34 @@ curl -X GET http://localhost:3000/api/matches \
 curl -X GET http://localhost:3000/api/matches/2/messages \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_VALID_TOKEN"
+
+````
+
+### Message Get ID
+
+````
+curl -X GET http://localhost:3000/api/matches/4/messages \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_VALID_TOKEN"
+
+````
+### Message Post
+
+````
+  curl -X GET http:POST http://localhost:3000/api/messages/4   -H "Content-Type: application/json"   -H "Authorization: Bearer YOUR_VALID_TOKEN"   -d '{"messageText": "Halo, ini pesan kedua!"}'
+  {"success":false,"message":"Error sending message"}
+
+````
+
+- Penggunaan token didapatkan dari token yang diberikan setelah melakukan login dari registrasi, token tersebut harus digunakan untuk melakukan request ke endpoint yang lainnya
+- Penggunaan token yang tidak valid akan mengembalikan error 401 Unauthorized
+
+### Swipe
+
+````
+curl -X POST http://localhost:3000/api/swipes \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <TOKEN_ANDA>" \
+  -d '{"targetUserId": 3, "direction": "right"}'
 
 ````

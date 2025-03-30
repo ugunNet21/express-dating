@@ -29,7 +29,8 @@ module.exports = {
         });
       }
 
-      req.userId = decoded.userId;
+      req.user = decoded;
+      req.userId = decoded.userId; 
       next();
     } catch (error) {
       console.error('Auth error:', error);
