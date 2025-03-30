@@ -22,4 +22,6 @@ dating-app-backend/
 ````
 npm install express pg dotenv cors helmet jsonwebtoken bcrypt
 
+npm install socket.io
+
 ````
