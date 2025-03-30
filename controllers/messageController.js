@@ -1,5 +1,6 @@
 const Message = require('../models/message');
 const Notification = require('../models/notification');
+const db = require('../config/db');
 
 module.exports = {
   async sendMessage(req, res) {
@@ -8,13 +9,30 @@ module.exports = {
       const { userId } = req;
       const { messageText } = req.body;
 
+      // Cek apakah user adalah bagian dari match ini
+      const matchCheck = await db.query(
+        `SELECT * FROM matches 
+         WHERE match_id = $1 
+         AND (user_id_1 = $2 OR user_id_2 = $2)`,
+        [matchId, userId]
+      );
+
+      if (matchCheck.rows.length === 0) {
+        return res.status(403).json({
+          success: false,
+          message: 'You are not authorized to send messages in this match'
+        });
+      }
+
       const message = await Message.create({
         matchId,
         senderId: userId,
         messageText
       });
 
-      // Get the other user in the match
+      console.log("✅ Message successfully saved:", message);
+
+      // Ambil penerima pesan
       const { rows } = await db.query(
         `SELECT 
           CASE 
@@ -26,7 +44,13 @@ module.exports = {
         [userId, matchId]
       );
 
-      // Create notification
+      console.log("📩 Receiver ID:", rows[0]?.receiver_id);
+
+      if (!rows.length) {
+        console.warn("⚠️ Warning: No receiver found for match", matchId);
+      }
+
+      // Buat notifikasi
       await Notification.create({
         userId: rows[0].receiver_id,
         notificationType: 'message',
@@ -34,13 +58,16 @@ module.exports = {
         relatedId: matchId
       });
 
+      console.log("🔔 Notification created successfully");
+
       res.status(201).json({
         success: true,
         message: 'Message sent successfully',
         data: message
       });
+
     } catch (error) {
-      console.error('Message error:', error);
+      console.error("❌ Error in sendMessage:", error);
       res.status(500).json({
         success: false,
         message: 'Error sending message'
