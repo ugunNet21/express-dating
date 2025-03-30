@@ -214,3 +214,22 @@ curl -X GET http://localhost:3000/api/matches/2/messages \
   -H "Authorization: Bearer YOUR_VALID_TOKEN"
 
 ````
+
+### Message Get ID
+
+````
+curl -X GET http://localhost:3000/api/matches/4/messages \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_VALID_TOKEN"
+
+````
+### Message Post
+
+````
+  curl -X GET http:POST http://localhost:3000/api/messages/4   -H "Content-Type: application/json"   -H "Authorization: Bearer YOUR_VALID_TOKEN"   -d '{"messageText": "Halo, ini pesan kedua!"}'
+  {"success":false,"message":"Error sending message"}
+
+````
+
+- Penggunaan token didapatkan dari token yang diberikan setelah melakukan login dari registrasi, token tersebut harus digunakan untuk melakukan request ke endpoint yang lainnya
+- Penggunaan token yang tidak valid akan mengembalikan error 401 Unauthorized
