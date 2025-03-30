@@ -158,6 +158,18 @@ VALUES (4, 2, 'Halo, ini pesan pertama!', NOW(), false);
 
 ````
 
+- cek notifikasi
+````
+SELECT * FROM notifications WHERE user_id = 2 ORDER BY created_at DESC;
+
+````
+- masuikan notifikasi
+````
+INSERT INTO notifications (user_id, notification_type, content, related_id, is_read, created_at)
+VALUES (2, 'match', 'You have a new match!', 10, false, NOW());
+
+````
+
 ## Tes Endpoint
 ## Contoh code Bearer Token
 ````
@@ -245,5 +257,21 @@ curl -X POST http://localhost:3000/api/swipes \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <TOKEN_ANDA>" \
   -d '{"targetUserId": 3, "direction": "right"}'
+
+````
+
+### Daftar Notification pengguna
+````
+curl -X GET http://localhost:3000/api/notifications \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -H "Content-Type: application/json"
+
+````
+
+### Menandai notification yg dibaca
+````
+curl -X PUT http://localhost:3000/api/notifications/NOTIFICATION_ID/read \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -H "Content-Type: application/json"
 
 ````
