@@ -1,4 +1,4 @@
--- Database Schema untuk Aplikasi Kencan (seperti Mchat/Tinder)
+-- Database Schema untuk Aplikasi
 
 -- Tabel Users (Pengguna)
 CREATE TABLE users (
