@@ -24,4 +24,6 @@ npm install express pg dotenv cors helmet jsonwebtoken bcrypt
 
 npm install socket.io
 
+npm install --save-dev nodemon
+
 ````
