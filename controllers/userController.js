@@ -38,26 +38,47 @@ module.exports = {
   async updateProfile(req, res) {
     try {
       const { userId } = req;
-      const { firstName, lastName, bio, gender } = req.body;
-
+      const { first_name, last_name, bio, gender } = req.body; 
+  
+      console.log("Updating user:", userId);
+      console.log("Data received:", { first_name, last_name, bio, gender });
+  
+      if (!first_name || !last_name) {
+        return res.status(400).json({
+          success: false,
+          message: "First name and last name are required."
+        });
+      }
+  
       const { rows } = await db.query(
         `UPDATE users 
-         SET first_name = $1, last_name = $2, bio = $3, gender = $4
+         SET first_name = $1, last_name = $2, bio = $3, gender = $4, updated_at = CURRENT_TIMESTAMP
          WHERE user_id = $5
          RETURNING user_id, first_name, last_name, bio, gender`,
-        [firstName, lastName, bio, gender, userId]
+        [first_name, last_name, bio, gender, userId]
       );
-
+  
+      console.log("Update result:", rows);
+  
+      if (rows.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "User not found"
+        });
+      }
+  
       res.json({
         success: true,
-        message: 'Profile updated successfully',
+        message: "Profile updated successfully",
         data: rows[0]
       });
+  
     } catch (error) {
-      console.error('Update profile error:', error);
+      console.error("Update profile error:", error);
       res.status(500).json({
         success: false,
-        message: 'Error updating profile'
+        message: "Error updating profile",
+        error: error.message
       });
     }
   },
