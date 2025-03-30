@@ -20,6 +20,10 @@ dating-app-backend/
 ### Install Lib
 
 ````
+mkdir dating-app-backend
+cd dating-app-backend
+npm init -y
+
 npm install express pg dotenv cors helmet jsonwebtoken bcrypt
 
 npm install socket.io
@@ -33,8 +37,15 @@ npm install express-validator
 ````
 
 - Run jwt env:
-- node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+````
+node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+````
 
+- verifikasi token:
+````
+echo "YOUR_ACCESS_TOKEN" | jq -R 'split(".") | .[1] | @base64d | fromjson'
+
+````
 
 ### DB
 
@@ -45,6 +56,12 @@ npm install express-validator
 - psql -U postgres -d dating_app -f /home/anone/Projects/express/dating-app-backend/database/dating-schema.sql
 - psql -U postgres -d dating_app
 - \d users
+- cek tabel
+
+````
+sudo -u postgres psql -d dating_app -c "\dt"
+
+````
 
 ````
                                               Table "public.users"
@@ -104,5 +121,44 @@ VALUES ('example@example.com', '1234567890', 'hashed_password', 'John', 'Doe', '
 ---------+---------------------+--------------+-----------------+------------+-----------+------------+--------+-----+--------------+--------------+-------------------------------+----------------+---------------------+-------------------------------+-------------------------------
        1 | example@example.com | 1234567890   | hashed_password | John       | Doe       | 1990-01-01 | male   |     |              |              | 2025-03-30 10:10:08.788761+07 | active         | unverified          | 2025-03-30 10:10:08.788761+07 | 2025-03-30 10:10:08.788761+07
 (1 row)
+
+````
+
+## Tes Endpoint
+
+### POST Regitrasi /users
+
+````
+curl -X POST http://localhost:3000/api/auth/register \
+  -H "Content-Type: application/json" \
+  --data '{
+    "email": "newuser@example.com",
+    "password": "password123",
+    "first_name": "New",
+    "last_name": "User",
+    "birth_date": "1990-01-01",
+    "gender": "male"
+  }'
+
+````
+
+### POST Login /users/login
+
+````
+curl -X POST http://localhost:3000/api/auth/login \
+  -H "Content-Type: application/json" \
+  --data '{
+    "email": "newuser@example.com",
+    "password": "password123"
+  }'
+
+````
+
+### GET /users
+
+````
+curl -X GET http://localhost:3000/api/users/me \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
 
 ````
