@@ -5,11 +5,11 @@ const http = require('http');
 require('dotenv').config();
 
 // Import routes
-const authRoutes = require('./routes/auth');
-const userRoutes = require('./routes/users');
-const matchRoutes = require('./routes/matches');
-const messageRoutes = require('./routes/messages');
-const swipeRoutes = require('./routes/swipes');
+const authRoutes = require('./routes/authRoutes');
+const userRoutes = require('./routes/userRoutes');
+const matchRoutes = require('./routes/matchRoutes');
+const messageRoutes = require('./routes/messageRoutes');
+const swipeRoutes = require('./routes/swipeRoutes');
 
 const app = express();
 const server = http.createServer(app);
